@@ -10,3 +10,4 @@ cache
 docker-compose.yaml
 public/assets
 node_modules
+.env
