@@ -5,7 +5,7 @@
   use App\Routes\Route;
   use Module\Auth\Middlewares\AuthMiddleware;
 
-  Route::get('/test', function () {
+  Route::get('/login', function () {
     return view('auth.login', ['nombre' => 'Cristian', 'edad' => 26]);
   }, AuthMiddleware::class);
 
