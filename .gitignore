@@ -9,3 +9,5 @@ docker-compose.yaml
 
 cache
 .vscode
+public/assets
+node_modules
