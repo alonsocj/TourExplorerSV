@@ -1,9 +1,6 @@
 <?php
 
   // autocarga de clases con PSR-4
-
-  use Module\Auth\ModuleProvider;
-
   require __DIR__.'/vendor/autoload.php';
 
   // exist const PROJECT

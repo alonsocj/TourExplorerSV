@@ -4,106 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap w/ Vite</title>
-    
-    <script type="module" crossorigin src="./index.js"></script>
-    <link rel="stylesheet" href="./index.css">
+    <script type="module" src="./js/main.js"></script>
   </head>
   <body>
-
-    <nav class="navbar navbar-expand-sm navbar-light bg-light">
-        <div class="container">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId"
-          aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="collapsibleNavId">
-          <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" href="#" aria-current="page">Home <span class="visually-hidden">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-              <div class="dropdown-menu" aria-labelledby="dropdownId">
-                <a class="dropdown-item" href="#">Action 1</a>
-                <a class="dropdown-item" href="#">Action 2</a>
-              </div>
-            </li>
-          </ul>
-          <form class="d-flex my-2 my-lg-0">
-            <input class="form-control me-sm-2" type="text" placeholder="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
-        </div>
-      </div>
-    </nav>
-    
     <div class="container py-4 px-3 mx-auto">
       <h1>Hello, Bootstrap and Vite!</h1>
       <button class="btn btn-primary">Primary button</button>
     </div>
-
-    <footer>
-      <div class="container py-4 px-3 mx-auto">
-        <div class="row">
-          <!-- menu list -->
-          <div class="col-md-3 col-sm-6 col-xs-12">
-            <p>Menu</p>
-            <ul class="list-unstyled">
-              <li><a href="#">Home</a></li>
-              <li><a href="#">About us </a></li>
-              <li><a href="#">Services</a></li>
-              <li><a href="#">Portfolio</a></li>
-              <li><a href="#">Contact</a></li>
-            </ul>
-          </div>
-          <!-- end menu list -->
-
-        </div>
-      </div>
-    </footer>
-
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#modalId">
-      Launch
-    </button>
-    
-    <!-- Modal -->
-    <div class="modal fade" id="modalId" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalTitleId">Modal title</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-          <div class="modal-body">
-            <div class="container-fluid">
-              Add rows here
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <script>
-      var modalId = document.getElementById('modalId');
-    
-      modalId.addEventListener('show.bs.modal', function (event) {
-          // Button that triggered the modal
-          let button = event.relatedTarget;
-          // Extract info from data-bs-* attributes
-          let recipient = button.getAttribute('data-bs-whatever');
-    
-        // Use above variables to manipulate the DOM
-      });
-    </script>
-    
   </body>
 </html>
