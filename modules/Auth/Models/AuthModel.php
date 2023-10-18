@@ -6,27 +6,15 @@ use Core\MysqlPDO;
 
 class AuthModel
 {
-  const TABLE = 'auth';
+  const TABLE_USERS = 'usuarios';
 
-  static public function index()
+  static public function login($correo, $contrasena)
   {
-    return MysqlPDO::find(self::TABLE);
-  }
-
-  static public function insert($data)
-  {
-    return MysqlPDO::insert(self::TABLE, $data);
-  }
-
-  static public function login($email, $password)
-  {
-    $user = MysqlPDO::findOne(self::TABLE, ['*'], ['email' => $email]);
-    if ($user) {
-      if (password_verify($password, $user['password'])) {
-        return $user;
-      }
+    try {
+      $user = MysqlPDO::findOne(self::TABLE_USERS, ['*'], ['correo' => $correo, 'contrasena' => $contrasena]);
+      return $user;
+    } catch (\Exception $e) {
+      return $e->getMessage();
     }
-    return false;
   }
-
 }
