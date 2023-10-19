@@ -25,18 +25,18 @@
           <form id="form-login">
             <div class="form-group m-3">
               <label>Email</label>
-              <input name="email" class="form-control" placeholder="ejemplo@gmail.com" type="email">
+              <input name="correo" class="form-control" placeholder="ejemplo@gmail.com" type="email">
             </div>
             <div class="form-group m-3">
               <label>Contraseña</label>
-              <input class="form-control mb-3" placeholder="Digite su contraseña" type="password">
+              <input class="form-control mb-3" placeholder="Digite su contraseña" type="password" name="contrasena">
               <a href="">¿Olvidaste tu contraseña?</a>
             </div>
             <div class="form-group">
             </div>
             <div class="form-group p-3 d-flex justify-content-end gap-2">
               <button type="submit" class="btn btn-primary btn-block">Iniciar sesión</button>
-              <a href="" class="btn btn-outline-primary">Registrarse</a>
+              <a href="/register" class="btn btn-outline-primary">Registrarse</a>
             </div>
           </form>
         </article>
@@ -54,13 +54,15 @@
           method: 'POST',
           body: data
         })
-        .then(res => res.json())
         .then(data => {
+          console.log(data);
           if (data.status === 200) {
-            window.location.href = '/dashboard';
+            window.location.href = '/';
+          }else{
+            alert('Credenciales incorrectas');
           }
         })
-        .catch(err => console.log(err));
+        .catch(err => alert('Error al iniciar sesión'));
     });
   </script>
 </body>

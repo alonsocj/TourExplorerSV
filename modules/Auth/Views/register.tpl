@@ -29,7 +29,7 @@
             </div>
             <div class="form-group mb-3">
               <label for="telefono">Telefono</label>
-              <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="Telefono" >
+              <input type="text" class="form-control" id="telefono" name="telefono" placeholder="0000-0000"  maxlength="9" minlength="9" pattern="[0-9]4-[0-9]" >
             </div>
             <div class="form-group mb-3">
               <label for="direccion">Dirección</label>
@@ -58,6 +58,7 @@
   </main>
   <script>
     const formRegister = document.getElementById('form-register');
+    const inputTelefono = document.getElementById('telefono');
     formRegister.addEventListener('submit', (e) => {
       e.preventDefault();
       const formData = new FormData(formRegister);
@@ -65,12 +66,10 @@
         method: 'POST',
         body: formData
       })
-      .then(res => console.log(res))
-      .then(res => res.json())
         .then(res => {
-          if (res.status === 'ok') {
-            alert('Usuario registrado correctamente');
-            window.location.href = '/login';
+          console.log(res); 
+          if (res.status === 200) {
+            window.location.href = '/';
           } else {
             alert('Error al registrar usuario');
           }
