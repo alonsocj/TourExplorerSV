@@ -3,6 +3,8 @@
   namespace Module\Todo\Controllers;
 
   use Module\Todo\Models\TodoModel;
+  use App\Routes\Response;
+  use Symfony\Component\HttpFoundation\Request;
 
   class TodoController {
     public function index() {
@@ -15,16 +17,32 @@
     }
 
     public function store ($request, $params) {
+      var_dump("Request ", $request, "Params", $params);
       if (isset($request['nombre']) && isset($request['descripcion'])) {
         $data = [
           'nombre' => $request['nombre'],
           'descripcion' => $request['descripcion']
         ];
-        TodoModel::insert($data);
-        return true;
+        try {
+          TodoModel::insert($data);
+        } catch (\Throwable $th) {
+          return Response::json([
+            'status' => 'error',
+            'message' => 'Error al crear el todo'
+          ], 400);
+        }
+        Response::json([
+          'status' => 'success',
+          'message' => 'Todo creado correctamente'
+        ], 201);
       } else {
-        return false;
+        return Response::json([
+          'status' => 'error',
+          'message' => 'Error al crear el todo'
+        ], 400);
       }
+
+      
     }
 
     public function update ($request, $params) {

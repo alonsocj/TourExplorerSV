@@ -106,6 +106,13 @@
         fetch('/todos', {
           method: 'POST',
           body: formData
+          // body: JSON.stringify({
+          //   nombre: nombre,
+          //   descripcion: descripcion
+          // }),
+          // headers: {
+          //   'Content-Type': 'application/json'
+          // }
         }).then((response) => response.json())
         .then((data) => {
           console.log(data);

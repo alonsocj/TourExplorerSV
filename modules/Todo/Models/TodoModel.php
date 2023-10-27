@@ -1,7 +1,9 @@
 <?php 
 
   namespace Module\Todo\Models;
+  
   use Core\MysqlPDO;
+
   class TodoModel {
     const TABLE = 'todos';
 

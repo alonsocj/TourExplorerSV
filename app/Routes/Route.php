@@ -140,7 +140,6 @@ class Route
 
   static public function execDispatcher ()
   {
-    $routeInfo = static::generateDispatcher()->dispatch(static::$httpMethod, static::$uri);
     // Fetch method and URI from somewhere
     $uri = static::$uri;
 
@@ -149,6 +148,12 @@ class Route
       $uri = substr($uri, 0, $pos);
     }
     $uri = rawurldecode($uri);
+
+    $routeInfo = static::generateDispatcher()->dispatch(static::$httpMethod, $uri);
+    
+    $json_data = file_get_contents("php://input");
+    $data = json_decode($json_data, true);
+
     switch ($routeInfo[0]) {
       case Dispatcher::NOT_FOUND:
         // ... 404 Not Found
@@ -164,13 +169,23 @@ class Route
         break;
       case Dispatcher::FOUND:
         $handler = $routeInfo[1];
-        $vars = $routeInfo[2];
+        $paramsData = $routeInfo[2];
+        $queryParams = $_GET;
+        $bodyParams = $_POST;
         // ... call $handler with $vars
         if (static::$httpMethod == 'POST' || static::$httpMethod == 'PUT' || static::$httpMethod == 'DELETE') {
           
-          return static::callCallable($handler, $_REQUEST, $vars);
+          return static::callCallable($handler, [
+            'body' => $data ? $data : $bodyParams,
+            'query' => $queryParams,
+          ], [
+            'params' => $data
+          ]);
         }
-        return static::callCallable($handler, $vars);
+        return static::callCallable($handler, [
+          'query' => $queryParams,
+          'params' => $paramsData
+        ]);
         break;
     }
   }
