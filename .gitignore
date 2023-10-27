@@ -8,6 +8,10 @@ docker-compose.yaml
 # composer.lock
 
 cache
+docker-compose.yaml
+public/assets
+node_modules
+.env
 .vscode
 public/assets
 node_modules

@@ -1,10 +1,15 @@
 <?php
 
-  namespace Module\Auth\Middlewares;
+namespace Module\Auth\Middlewares;
 
-  class AuthMiddleware {
-    public function __invoke($routeInfo)
-    {
-      return true;
+class AuthMiddleware
+{
+  public function __invoke()
+  {
+    if (!isset($_SESSION['user'])) {
+      return view('auth.login');
+      exit;
     }
   }
+
+}
