@@ -29,7 +29,7 @@
             </div>
             <div class="form-group mb-3">
               <label for="telefono">Telefono</label>
-              <input type="text" class="form-control" id="telefono" name="telefono" placeholder="0000-0000"  maxlength="9" minlength="9" pattern="[0-9]4-[0-9]" >
+              <input type="text" class="form-control" id="telefono" name="telefono" placeholder="0000-0000" >
             </div>
             <div class="form-group mb-3">
               <label for="direccion">Dirección</label>

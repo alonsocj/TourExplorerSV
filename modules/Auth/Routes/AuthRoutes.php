@@ -20,3 +20,5 @@ Route::post('/login', function () {
 Route::post('/register', function () {
   return AuthController::register($_POST, []);
 });
+
+Route::post('/logout', [AuthController::class, 'logout']);
