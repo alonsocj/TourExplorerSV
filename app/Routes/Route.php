@@ -19,6 +19,10 @@ class Route
 
   const UNAUTHORIZED = 401;
 
+  /**
+   * @return void
+   * Inicializa las variables de la clase de forma estatica
+   */
   public static function init()
   {
     self::$httpMethod = $_SERVER['REQUEST_METHOD'];
@@ -29,6 +33,11 @@ class Route
     self::$client = new Client();
   }
 
+  /**
+   * @param $callable
+   * Permite pasar un callable como string o array
+   * luego lo convierte en un callable y lo retorna
+   */
   static private function parseCallable($callable)
   {
     if (is_callable($callable)) {
@@ -137,7 +146,10 @@ class Route
     return new $options['dispatcher'](static::$r->getData());
   }
 
-
+  /**
+   * @return void
+   * Ejecuta el dispatcher de FastRoute
+   */
   static public function execDispatcher ()
   {
     // Fetch method and URI from somewhere
@@ -190,6 +202,13 @@ class Route
     }
   }
 
+  /**
+   * @param $callable
+   * @param array $params
+   * 
+   * @return mixed
+   * Ejecuta un callable
+   */
   static private function callCallable ($callable, ...$params) {
     if (is_callable($callable)) {
       return $callable(...$params);
@@ -208,6 +227,12 @@ class Route
     }
   }
 
+  /**
+   * @param $middleware
+   * @return void
+   * 
+   * Agrega un middleware global
+   */
   static public function setGlobalMiddleware($middleware)
   {
     if (!class_exists($middleware)) {
@@ -220,6 +245,10 @@ class Route
     static::$global_middleware[] = $middleware;
   }
 
+  /**
+   * @param $middleware
+   * @return void
+   */
   static private function setMiddleware ($middleware) {
     // eval tyype
     if (is_string($middleware)) {
