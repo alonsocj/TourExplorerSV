@@ -13,8 +13,6 @@ class Route
   static private $httpMethod;
   static private $uri;
   static private $r;
-  static private $middlewares;
-  static private $global_middleware;
   static private $client;
 
   const UNAUTHORIZED = 401;
@@ -28,8 +26,6 @@ class Route
     self::$httpMethod = $_SERVER['REQUEST_METHOD'];
     self::$uri = $_SERVER['REQUEST_URI'];
     self::$r = new RouteCollector(new Std(), new GroupCountBased());
-    self::$middlewares = [];
-    self::$global_middleware = [];
     self::$client = new Client();
   }
 
@@ -82,22 +78,19 @@ class Route
    * 
    * @return void
    */
-  static public function get($uri, $callback, $middleware = '')
+  static public function get($uri, $callback)
   {
-    static::setMiddleware($middleware);
     static::$r->addRoute('GET', $uri, static::parseCallable($callback));
   }
 
   /**
    * @param $uri
    * @param $callback
-   * @param string $middleware
    * 
    * @return void
    */
-  static public function post($uri, $callback, $middleware = '')
+  static public function post($uri, $callback)
   {
-    static::setMiddleware($middleware);
     static::$r->addRoute('POST', $uri, $callback);
   }
 
@@ -105,13 +98,11 @@ class Route
   /**
    * @param $uri
    * @param $callback
-   * @param string $middleware
    * 
    * @return void
    */
-  static public function put($uri, $callback, $middleware = '')
+  static public function put($uri, $callback)
   {
-    static::setMiddleware($middleware);
     $method = $_SERVER['REQUEST_METHOD'];
     if ($method == 'POST' && isset($_POST['_method']) && $_POST['_method'] == 'PUT') {
       static::$r->addRoute('POST', $uri, $callback);
@@ -123,13 +114,11 @@ class Route
   /**
    * @param $uri
    * @param $callback
-   * @param string $middleware
    * 
    * @return void
    */
-  static public function delete($uri, $callback, $middleware = '')
+  static public function delete($uri, $callback)
   {
-    static::setMiddleware($middleware);
     $method = $_SERVER['REQUEST_METHOD'];
     if ($method == 'POST' && isset($_POST['_method']) && $_POST['_method'] == 'DELETE') {
       static::$r->addRoute('POST', $uri, $callback);
@@ -138,6 +127,9 @@ class Route
     }
   }
 
+  /**
+   * Genera el dispatcher de FastRoute
+   */
   static private function generateDispatcher ($options = []) {
     $options += [
         'dispatcher' => 'FastRoute\\Dispatcher\\GroupCountBased',
@@ -160,11 +152,12 @@ class Route
       $uri = substr($uri, 0, $pos);
     }
     $uri = rawurldecode($uri);
+    $dispatcher = static::generateDispatcher();
 
-    $routeInfo = static::generateDispatcher()->dispatch(static::$httpMethod, $uri);
-    
+    $routeInfo = $dispatcher->dispatch(static::$httpMethod, $uri);
     $json_data = file_get_contents("php://input");
     $data = json_decode($json_data, true);
+
 
     switch ($routeInfo[0]) {
       case Dispatcher::NOT_FOUND:
@@ -227,50 +220,6 @@ class Route
     }
   }
 
-  /**
-   * @param $middleware
-   * @return void
-   * 
-   * Agrega un middleware global
-   */
-  static public function setGlobalMiddleware($middleware)
-  {
-    if (!class_exists($middleware)) {
-      return;
-    }
-    // find if exists
-    if (in_array($middleware, static::$global_middleware)) {
-      return;
-    }
-    static::$global_middleware[] = $middleware;
-  }
-
-  /**
-   * @param $middleware
-   * @return void
-   */
-  static private function setMiddleware ($middleware) {
-    // eval tyype
-    if (is_string($middleware)) {
-      $middleware = [$middleware];
-    } else if (!is_array($middleware)) {
-      return;
-    }
-    static::$middlewares = $middleware;
-  }
-
-  static private function execMiddleware($routeInfo, $middleware)
-  {
-    if (class_exists($middleware)) {
-      if ($routeInfo[0] == Dispatcher::FOUND) {
-        $middleware = new $middleware();
-        if (!$middleware($routeInfo)) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
 }
 
 Route::init();
