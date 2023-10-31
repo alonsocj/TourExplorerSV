@@ -11,9 +11,7 @@
   </head>
   <body>
 
-    {include file="partials/header.tpl"}
     {block name="content"}{/block}
-    {include file="partials/footer.tpl"}
     {block name="modals"}{/block}
     <script src="/public/assets/index.js"></script>
     {block name="scripts"}{/block}
