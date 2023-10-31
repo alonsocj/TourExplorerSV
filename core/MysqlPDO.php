@@ -41,7 +41,7 @@ class MysqlPDO
     foreach ($columns as $column => $value) {
       $stmt->bindValue(":$column", $value);
     }
-    $stmt->execute();
+    return $stmt->execute();
   }
   
   /**
