@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "start": "vite",
+    "prod": "vite build",
+    "clean": "vite clean"
+  },
+  "devDependencies": {
+    "sass": "^1.69.3",
+    "vite": "^4.4.11"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.2",
+    "sweetalert2": "^11.8.0"
+  }
+}
