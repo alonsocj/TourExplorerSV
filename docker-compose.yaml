@@ -9,9 +9,10 @@ services:
       dockerfile: ./.docker/Dockerfile
     ports:
       - 8080:80
+      - 8081:8081
     environment:
       - COMPOSER_ALLOW_SUPERUSER=1
-    command: bash -c "composer install --ignore-platform-req=ext-gd && apache2-foreground"
+    command: bash -c "composer install --ignore-platform-req=ext-gd && apache2-foreground && php -S app-php:8081"
     networks:
       - app-network
     depends_on:
