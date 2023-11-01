@@ -154,6 +154,8 @@ class MysqlPDO
     }
 
     $stmt->execute();
+
+    return $stmt->rowCount();
   }
 
 
@@ -179,6 +181,8 @@ class MysqlPDO
     }
 
     $stmt->execute();
+
+    return $stmt->rowCount();
   }
 
 }

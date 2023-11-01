@@ -5,13 +5,20 @@
   use App\Routes\Route;
 
   use Module\Place\Controllers\PlaceController;
+  use Module\Place\Controllers\ImageController;
 
-  Route::get('/lugares', [PlaceController::class, 'index']);
+  Route::get('/panel/lugares', [PlaceController::class, 'index']);
 
-  Route::post('/lugares', [PlaceController::class, 'store']);
+  Route::get('/panel/lugares/{lugar}/imagenes', [ImageController::class, 'index']);
+  Route::post('/panel/lugares/{lugar}/imagenes', [ImageController::class, 'store']);
+  Route::delete('/panel/lugares/{lugar}/imagenes/{id}', [ImageController::class, 'destroy']);
 
-  Route::put('/lugares/{id}', [PlaceController::class, 'update']);
+  Route::get('/panel/lugares/{id}', [PlaceController::class, 'show']);
 
-  Route::delete('/lugares/{id}', [PlaceController::class, 'destroy']);
+  Route::post('/panel/lugares', [PlaceController::class, 'store']);
+
+  Route::put('/panel/lugares/{id}', [PlaceController::class, 'update']);
+
+  Route::delete('/panel/lugares/{id}', [PlaceController::class, 'destroy']);
 
   
