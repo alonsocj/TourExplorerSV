@@ -9,6 +9,11 @@ class UserModel
 {
   const TABLE_USERS = 'usuarios';
 
+  static public function index()
+  {
+    return MysqlPDO::find(self::TABLE_USERS);
+  }
+
   static public function create($columns) {
     try {
       $user = MysqlPDO::insert(self::TABLE_USERS, $columns);
@@ -52,6 +57,15 @@ class UserModel
     }
   }
 
+  static public function actualizarUsuario($id, $columns) {
+    try {
+      $user = MysqlPDO::update(self::TABLE_USERS, $columns, ['id_usuario' => $id]);
+      return $user;
+    } catch (\Exception $e) {
+      return null;
+    }
+  }
+
   static public function obtenerUsuario ($email) {
     try {
       $user = MysqlPDO::findOne(self::TABLE_USERS, ['*'], ['correo' => $email]);
@@ -63,4 +77,26 @@ class UserModel
       return null;
     }
   }
+
+  static public function obtenerUno ($id_usuario) {
+    try {
+      $user = MysqlPDO::findOne(self::TABLE_USERS, ['*'], ['id_usuario' => $id_usuario]);
+      if (!$user) return null;
+      $rol = RolModel::getRolById($user['id_rol']);
+      $user['rol'] = $rol;
+      return $user;
+    } catch (\Exception $e) {
+      return null;
+    }
+  }
+
+  static public function borrarUsuarioPorId($id_usuario) {
+    try {
+      $user = MysqlPDO::deleteOne(self::TABLE_USERS, ['id_usuario' => $id_usuario]);
+      return $user;
+    } catch (\Exception $e) {
+      return null;
+    }
+  }
+
 }

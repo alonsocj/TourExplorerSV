@@ -8,6 +8,7 @@ import * as bootstrap from 'bootstrap'
 import Swal from 'sweetalert2'
 
 import DataTable from 'datatables.net-dt';
+import 'datatables.net-responsive';
 
 
 window.Swal = Swal.mixin({

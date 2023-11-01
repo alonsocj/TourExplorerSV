@@ -41,7 +41,8 @@ class MysqlPDO
     foreach ($columns as $column => $value) {
       $stmt->bindValue(":$column", $value);
     }
-    return $stmt->execute();
+    $stmt->execute();
+    return self::$conn->lastInsertId();
   }
   
   /**
