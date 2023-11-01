@@ -177,14 +177,16 @@ class Route
         $paramsData = $routeInfo[2];
         $queryParams = $_GET;
         $bodyParams = $_POST;
+        $fileData = $_FILES;
         // ... call $handler with $vars
         if (static::$httpMethod == 'POST' || static::$httpMethod == 'PUT' || static::$httpMethod == 'DELETE') {
           
           return static::callCallable($handler, [
             'body' => $data ? $data : $bodyParams,
             'query' => $queryParams,
+            'files' => $fileData,
           ], [
-            'params' => $data
+            'params' => $paramsData
           ]);
         }
         return static::callCallable($handler, [

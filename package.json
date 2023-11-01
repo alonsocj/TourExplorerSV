@@ -9,8 +9,14 @@
     "vite": "^4.4.11"
   },
   "dependencies": {
+    "@fortawesome/free-brands-svg-icons": "^6.4.2",
+    "@fortawesome/free-regular-svg-icons": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.2",
+    "datatables.net-dt": "^1.13.6",
+    "datatables.net-responsive": "^2.5.0",
+    "datatables.net-responsive-dt": "^2.5.0",
     "sweetalert2": "^11.8.0"
   }
 }

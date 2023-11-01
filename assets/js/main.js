@@ -7,6 +7,10 @@ import * as bootstrap from 'bootstrap'
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
 
+import DataTable from 'datatables.net-dt';
+import 'datatables.net-responsive';
+
+
 window.Swal = Swal.mixin({
   title: 'Título de tu Alerta',
   text: 'Contenido de tu Alerta',
@@ -19,3 +23,5 @@ window.Swal = Swal.mixin({
   confirmButtonClass: 'btn btn-success', // clase de Bootstrap para el botón de confirmar
   cancelButtonClass: 'btn btn-secondary', // clas de Bootstrap para el botón de cancelar
 });
+
+window.DataTable = DataTable;
