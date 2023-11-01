@@ -22,6 +22,12 @@ class MysqlPDO
     self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   }
 
+  static public function query($sql) {
+    $stmt = self::$conn->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+
   /**
    * Metodo para insertar un registro en la base de datos
    * @param $columns = ['column_name' => 'value']
@@ -166,7 +172,7 @@ class MysqlPDO
    */
   static public function deleteOne ($table, $where = []) {
     $where_str = '';
-    if (count($where) > 0) {
+    if (is_array($where) && count($where) > 0) {
       $where_str = 'WHERE ';
       $where_str .= implode(' AND ', array_map(function ($column) {
         return "$column = :$column";
