@@ -184,7 +184,7 @@ class Route
             'body' => $data ? $data : $bodyParams,
             'query' => $queryParams,
           ], [
-            'params' => $data
+            'params' => $paramsData
           ]);
         }
         return static::callCallable($handler, [
