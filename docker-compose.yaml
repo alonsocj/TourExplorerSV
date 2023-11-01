@@ -1,0 +1,33 @@
+version: '1.1'
+services:
+  app-php:
+    container_name: app-php
+    volumes:
+      - .:/var/www/html
+    build: 
+      context: .
+      dockerfile: ./.docker/Dockerfile
+    ports:
+      - 8087:80
+    environment:
+      - COMPOSER_ALLOW_SUPERUSER=1
+    command: bash -c "composer install --ignore-platform-req=ext-gd && apache2-foreground"
+    networks:
+      - app-network
+    depends_on:
+      - mysqldb
+  mysqldb:
+    image: mysql
+    container_name: mysqldb
+    volumes:
+      - ./.docker/mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: toursexplorer
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - app-network
+    ports:
+      - 3306:3306
+networks:
+  app-network:
+    driver: bridge
