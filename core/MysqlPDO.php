@@ -42,6 +42,7 @@ class MysqlPDO
       $stmt->bindValue(":$column", $value);
     }
     $stmt->execute();
+    return self::$conn->lastInsertId();
   }
   
   /**
@@ -153,6 +154,8 @@ class MysqlPDO
     }
 
     $stmt->execute();
+
+    return $stmt->rowCount();
   }
 
 
@@ -178,6 +181,8 @@ class MysqlPDO
     }
 
     $stmt->execute();
+
+    return $stmt->rowCount();
   }
 
 }

@@ -23,3 +23,9 @@
       return $smarty->display($template);
     }
   }
+
+  if (!function_exists(('is_auth'))) {
+    function is_auth() {
+      return (isset($_SESSION['user']) && count($_SESSION['user']) > 0);
+    }
+  }

@@ -1,7 +1,11 @@
 RewriteEngine On
 RewriteBase /
-RewriteCond %{HTTP:Accept} application/json
-RewriteRule .* - [E=HTTP_CONTENT_TYPE:application/json]
+
+RewriteCond %{REQUEST_URI} !\.(jpeg|jpg|png|gif)$
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteCond %{HTTP:Accept} application/json
+RewriteRule .* - [E=HTTP_CONTENT_TYPE:application/json]
+
 RewriteRule ^(.*)$ index.php?/$1 [L]

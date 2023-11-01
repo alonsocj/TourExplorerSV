@@ -1,94 +1,120 @@
-<?php
+<?php 
 
 namespace Module\Auth\Controllers;
 
-use Module\Auth\Models\AuthModel;
-use Module\Auth\Models\UserModel;
+use Module\User\Models\UserModel;
+use App\Routes\Response;
 
 class AuthController
 {
 
-  static public function viewLogin()
+  public function renderLogin()
   {
     return view('auth.login');
   }
 
-  static public function viewRegister()
+  public function renderRegister()
   {
     return view('auth.register');
   }
 
-  static public function login($request, $params)
+  /**
+   * @param $request
+   * @param $params
+   * 
+   * @return Response
+   * 
+   * Inicia sesion
+   */
+  public function login($request, $params)
   {
+    $bodyData = $request['body'];
+    $correo = htmlentities(addslashes($bodyData['correo']));
+    $contrasena = htmlentities(addslashes($bodyData['contrasena']));
 
-    if (!isset($request['correo']) && !isset($request['contrasena'])) {
-      http_response_code(400);
-      return new \Exception('El correo y la contraseña son requeridos');
+    $usuario = UserModel::obtenerUsuario($correo);
+
+    if (!$usuario) {
+      return Response::json([
+        'success' => false,
+        'message' => 'Usuario no encontrado'
+      ], 404);
     }
 
-    $correo = $request['correo'];
-    $contrasena = $request['contrasena'];
+    $es_valido = password_verify($contrasena, $usuario['contrasena']);
 
-    $errors = [];
+    if ($es_valido) {
 
-    if (count($errors) > 0) {
-      http_response_code(400);
-      return new \Exception(array_values($errors)[0]);
+      $_SESSION['id_usuario'] = $usuario['id_usuario'];
+      $_SESSION['nombre'] = $usuario['nombre'];
+      $_SESSION['correo'] = $usuario['correo'];
+      $_SESSION['genero'] = $usuario['genero'];
+      $_SESSION['direccion'] = $usuario['direccion'];
+      $_SESSION['telefono'] = $usuario['telefono'];
+      $_SESSION['rol'] = $usuario['rol'];
+
+      // remover contrasena
+      unset($usuario['contrasena']);
+
+      return Response::json([
+        'success' => true,
+        'message' => 'Usuario logueado correctamente',
+        'user' => $usuario
+      ], 200);
+    } else {
+      return Response::json([
+        'success' => false,
+        'message' => 'Contraseña incorrecta'
+      ], 401);
     }
-
-    $user = AuthModel::login($correo, $contrasena);
-
-    if (!$user) {
-      http_response_code(401);
-      return new \Exception('Usuario o contraseña incorrectos');
-    }
-
-    $_SESSION['user'] = $user;
-    http_response_code(200);
-  }
-  static public function register($request, $params)
-  {
-    http_response_code(400);
-    // obligatorios
-    $nombre = $request['nombre'];
-    $correo = $request['correo'];
-    $contrasena = $request['contrasena'];
-
-    // no requeridos
-    $genero = $request['genero'];
-    $direccion = $request['direccion'];
-    $telefono = $request['telefono'];
-
-    $errors = [];
-
-    if (!$nombre) $errors['nombre'] = 'El nombre es requerido';
-    if (!$correo) $errors['correo'] = 'El correo es requerido';
-    if (!$contrasena) $errors['contrasena'] = 'La contraseña es requerida';
-
-    if (count($errors) > 0) {
-      return new \Exception(array_values($errors)[0]);
-    }
-
-    $user = UserModel::insertNewUser($nombre, $correo, $contrasena, $genero, $direccion, $telefono);
-    if (!$user) {
-      return new \Exception('No se pudo registrar el usuario');
-    }
-
-    $_SESSION['user'] = $user;
-
-    $response = [
-      'success' => true,
-      'message' => 'Usuario registrado correctamente',
-      'user' => $user
-    ];
-
-    http_response_code(200);
-    return $response;
+    
   }
 
-  static public function logout($request, $params)
+  public function registrar ($request, $params) {
+    $bodyData = $request['body'];
+    $nombre = htmlentities(addslashes($bodyData['nombre']));
+    $correo = htmlentities(addslashes($bodyData['correo']));
+    $contrasena = htmlentities(addslashes($bodyData['contrasena']));
+    $genero = htmlentities(addslashes($bodyData['genero']));
+    $direccion = htmlentities(addslashes($bodyData['direccion']));
+    $telefono = htmlentities(addslashes($bodyData['telefono']));
+
+    try {
+      if (UserModel::existeUsuario($correo)) {
+        throw new \Exception('El correo ya existe');
+      }
+      $usuario = UserModel::create([
+        'nombre' => $nombre,
+        'correo' => $correo,
+        'contrasena' => password_hash($contrasena, PASSWORD_DEFAULT),
+        'genero' => $genero,
+        'direccion' => $direccion,
+        'telefono' => $telefono
+      ]);
+
+      if (!$usuario) {
+        throw new \Exception('No se pudo registrar el usuario');
+      }
+
+      return Response::json([
+        'success' => true,
+        'message' => 'Usuario registrado correctamente',
+        'user' => $usuario
+      ], 201);
+
+    } catch (\Throwable $th) {
+      return Response::json([
+        'success' => false,
+        'message' => $th->getMessage()
+      ], 400);
+    }
+    
+  }
+
+  public function logout($request, $params)
   {
     session_destroy();
     http_response_code(200);
+    header('Location: /login');
   }
 }

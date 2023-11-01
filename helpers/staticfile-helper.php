@@ -8,7 +8,7 @@ if (!function_exists('staticFileHandler')) {
     if (file_exists($filename)) {
       $mime = mime_content_type($filename);
       $explode_file = explode('.', $filename);
-
+      
       switch ($mime) {
         case 'text/plain':
           $mime = 'text/' . end($explode_file);

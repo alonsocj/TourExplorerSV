@@ -13,22 +13,27 @@ class Route
   static private $httpMethod;
   static private $uri;
   static private $r;
-  static private $middlewares;
-  static private $global_middleware;
   static private $client;
 
   const UNAUTHORIZED = 401;
 
+  /**
+   * @return void
+   * Inicializa las variables de la clase de forma estatica
+   */
   public static function init()
   {
     self::$httpMethod = $_SERVER['REQUEST_METHOD'];
     self::$uri = $_SERVER['REQUEST_URI'];
     self::$r = new RouteCollector(new Std(), new GroupCountBased());
-    self::$middlewares = [];
-    self::$global_middleware = [];
     self::$client = new Client();
   }
 
+  /**
+   * @param $callable
+   * Permite pasar un callable como string o array
+   * luego lo convierte en un callable y lo retorna
+   */
   static private function parseCallable($callable)
   {
     if (is_callable($callable)) {
@@ -73,22 +78,19 @@ class Route
    * 
    * @return void
    */
-  static public function get($uri, $callback, $middleware = '')
+  static public function get($uri, $callback)
   {
-    static::setMiddleware($middleware);
     static::$r->addRoute('GET', $uri, static::parseCallable($callback));
   }
 
   /**
    * @param $uri
    * @param $callback
-   * @param string $middleware
    * 
    * @return void
    */
-  static public function post($uri, $callback, $middleware = '')
+  static public function post($uri, $callback)
   {
-    static::setMiddleware($middleware);
     static::$r->addRoute('POST', $uri, $callback);
   }
 
@@ -96,13 +98,11 @@ class Route
   /**
    * @param $uri
    * @param $callback
-   * @param string $middleware
    * 
    * @return void
    */
-  static public function put($uri, $callback, $middleware = '')
+  static public function put($uri, $callback)
   {
-    static::setMiddleware($middleware);
     $method = $_SERVER['REQUEST_METHOD'];
     if ($method == 'POST' && isset($_POST['_method']) && $_POST['_method'] == 'PUT') {
       static::$r->addRoute('POST', $uri, $callback);
@@ -114,13 +114,11 @@ class Route
   /**
    * @param $uri
    * @param $callback
-   * @param string $middleware
    * 
    * @return void
    */
-  static public function delete($uri, $callback, $middleware = '')
+  static public function delete($uri, $callback)
   {
-    static::setMiddleware($middleware);
     $method = $_SERVER['REQUEST_METHOD'];
     if ($method == 'POST' && isset($_POST['_method']) && $_POST['_method'] == 'DELETE') {
       static::$r->addRoute('POST', $uri, $callback);
@@ -129,6 +127,9 @@ class Route
     }
   }
 
+  /**
+   * Genera el dispatcher de FastRoute
+   */
   static private function generateDispatcher ($options = []) {
     $options += [
         'dispatcher' => 'FastRoute\\Dispatcher\\GroupCountBased',
@@ -137,10 +138,12 @@ class Route
     return new $options['dispatcher'](static::$r->getData());
   }
 
-
+  /**
+   * @return void
+   * Ejecuta el dispatcher de FastRoute
+   */
   static public function execDispatcher ()
   {
-    $routeInfo = static::generateDispatcher()->dispatch(static::$httpMethod, static::$uri);
     // Fetch method and URI from somewhere
     $uri = static::$uri;
 
@@ -149,6 +152,13 @@ class Route
       $uri = substr($uri, 0, $pos);
     }
     $uri = rawurldecode($uri);
+    $dispatcher = static::generateDispatcher();
+
+    $routeInfo = $dispatcher->dispatch(static::$httpMethod, $uri);
+    $json_data = file_get_contents("php://input");
+    $data = json_decode($json_data, true);
+
+
     switch ($routeInfo[0]) {
       case Dispatcher::NOT_FOUND:
         // ... 404 Not Found
@@ -164,17 +174,36 @@ class Route
         break;
       case Dispatcher::FOUND:
         $handler = $routeInfo[1];
-        $vars = $routeInfo[2];
+        $paramsData = $routeInfo[2];
+        $queryParams = $_GET;
+        $bodyParams = $_POST;
+        $fileData = $_FILES;
         // ... call $handler with $vars
         if (static::$httpMethod == 'POST' || static::$httpMethod == 'PUT' || static::$httpMethod == 'DELETE') {
           
-          return static::callCallable($handler, $_REQUEST, $vars);
+          return static::callCallable($handler, [
+            'body' => $data ? $data : $bodyParams,
+            'query' => $queryParams,
+            'files' => $fileData,
+          ], [
+            'params' => $paramsData
+          ]);
         }
-        return static::callCallable($handler, $vars);
+        return static::callCallable($handler, [
+          'query' => $queryParams,
+          'params' => $paramsData
+        ]);
         break;
     }
   }
 
+  /**
+   * @param $callable
+   * @param array $params
+   * 
+   * @return mixed
+   * Ejecuta un callable
+   */
   static private function callCallable ($callable, ...$params) {
     if (is_callable($callable)) {
       return $callable(...$params);
@@ -193,40 +222,6 @@ class Route
     }
   }
 
-  static public function setGlobalMiddleware($middleware)
-  {
-    if (!class_exists($middleware)) {
-      return;
-    }
-    // find if exists
-    if (in_array($middleware, static::$global_middleware)) {
-      return;
-    }
-    static::$global_middleware[] = $middleware;
-  }
-
-  static private function setMiddleware ($middleware) {
-    // eval tyype
-    if (is_string($middleware)) {
-      $middleware = [$middleware];
-    } else if (!is_array($middleware)) {
-      return;
-    }
-    static::$middlewares = $middleware;
-  }
-
-  static private function execMiddleware($routeInfo, $middleware)
-  {
-    if (class_exists($middleware)) {
-      if ($routeInfo[0] == Dispatcher::FOUND) {
-        $middleware = new $middleware();
-        if (!$middleware($routeInfo)) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
 }
 
 Route::init();
