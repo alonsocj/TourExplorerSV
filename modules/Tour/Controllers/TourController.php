@@ -251,7 +251,6 @@ class TourController
       ]);
       exit();
     }
-
     $paramsData = $params['params'];
 
     $tour = TourModel::obtenerUno($paramsData['id']);

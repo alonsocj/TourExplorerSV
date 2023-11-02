@@ -31,4 +31,9 @@
       $sql = "SELECT * FROM ".self::TABLE." WHERE fecha_salida_tour > NOW()";
       return MysqlPDO::query($sql);
     }
+
+    static public function obtenerToursFechaMenorAAhora () {
+      $sql = "SELECT * FROM ".self::TABLE." WHERE fecha_salida_tour < NOW()";
+      return MysqlPDO::query($sql);
+    }
   }
