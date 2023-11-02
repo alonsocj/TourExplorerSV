@@ -15,6 +15,13 @@ class UserController
    * 
    */
   public function renderIndex ($request) {
+    if (!is_admin()) {
+      return view('app.errors.no-autho', [
+        'error' => "No autorizado",
+        'message' => "No tiene permisos para acceder a esta seccion"
+      ]);
+      exit();
+    }
     $data = [
       'title' => 'Tours Explorer sv TODO',
       'message' => 'Ejemplo de crud',
@@ -32,6 +39,20 @@ class UserController
    * Borra un usuario
    */
   public function destroy ($request, $params) {
+    if (!is_admin()) {
+      return view('app.errors.no-autho', [
+        'error' => "No autorizado",
+        'message' => "No tiene permisos para acceder a esta seccion"
+      ]);
+      exit();
+    }
+    if (!is_admin()) {
+      return view('app.errors.no-autho', [
+        'error' => "No autorizado",
+        'message' => "No tiene permisos para acceder a esta seccion"
+      ]);
+      exit();
+    }
     $paramsData = $params['params'];
     $usuario = UserModel::obtenerUno($paramsData['id']);
     if(!$usuario) {
@@ -64,6 +85,13 @@ class UserController
    * Muestra un usuario
    */
   public function show ($request) {
+    if (!is_admin()) {
+      return view('app.errors.no-autho', [
+        'error' => "No autorizado",
+        'message' => "No tiene permisos para acceder a esta seccion"
+      ]);
+      exit();
+    }
     $params = $request['params'];
 
     //code...
@@ -84,6 +112,13 @@ class UserController
   }
 
   public function update($request, $params) {
+    if (!is_admin()) {
+      return view('app.errors.no-autho', [
+        'error' => "No autorizado",
+        'message' => "No tiene permisos para acceder a esta seccion"
+      ]);
+      exit();
+    }
     $bodyData = $request['body'];
     $paramsData = $params['params'];
 
@@ -135,6 +170,13 @@ class UserController
   }
 
   public function updatePassword($request, $params) {
+    if (!is_admin()) {
+      return view('app.errors.no-autho', [
+        'error' => "No autorizado",
+        'message' => "No tiene permisos para acceder a esta seccion"
+      ]);
+      exit();
+    }
     $bodyData = $request['body'];
     $paramsData = $params['params'];
 
@@ -164,6 +206,13 @@ class UserController
   }
 
   public function store($request, $params) {
+    if (!is_admin()) {
+      return view('app.errors.no-autho', [
+        'error' => "No autorizado",
+        'message' => "No tiene permisos para acceder a esta seccion"
+      ]);
+      exit();
+    }
     $bodyData = $request['body'];
 
     $rol = RolModel::getRolById(htmlentities(addslashes($bodyData['rol'])));

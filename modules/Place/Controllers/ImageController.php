@@ -9,6 +9,13 @@
 
   class ImageController {
     public function index($params) {
+      if (!is_admin()) {
+        return view('app.errors.no-autho', [
+          'title' => "No autorizado",
+          'message' => "No tiene permisos para acceder a esta seccion"
+        ]);
+        exit();
+      }
       $paramsData = $params['params'];
       $lugar = PlaceModel::obtenerUno(htmlentities(addslashes($paramsData['lugar'])));
       $data = [
@@ -21,6 +28,13 @@
     }
 
     public function show($params) {
+      if (!is_admin()) {
+        return view('app.errors.no-autho', [
+          'error' => "No autorizado",
+          'message' => "No tiene permisos para acceder a esta seccion"
+        ]);
+        exit();
+      }
       $paramsData = $params['params'];
       $imagen = ImageModel::obtenerUno(htmlentities(addslashes($paramsData['id'])));
       if (!$imagen) {
@@ -37,6 +51,13 @@
     }
 
     public function store ($request, $params) {
+      if (!is_admin()) {
+        return view('app.errors.no-autho', [
+          'error' => "No autorizado",
+          'message' => "No tiene permisos para acceder a esta seccion"
+        ]);
+        exit();
+      }
       $paramsData = $params['params'];
       $files = $request['files'];
 
@@ -81,6 +102,13 @@
     }
 
     public function destroy ($request, $params) {
+      if (!is_admin()) {
+        return view('app.errors.no-autho', [
+          'error' => "No autorizado",
+          'message' => "No tiene permisos para acceder a esta seccion"
+        ]);
+        exit();
+      }
       $paramsData = $params['params'];
 
       $lugar = PlaceModel::obtenerUno(htmlentities(addslashes($paramsData['lugar'])));
