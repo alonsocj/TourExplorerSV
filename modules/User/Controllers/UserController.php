@@ -16,7 +16,7 @@ class UserController
    */
   public function renderIndex ($request) {
     $data = [
-      'title' => 'Tours Explorer sv TODO',
+      'title' => 'Gestión de usuarios',
       'message' => 'Ejemplo de crud',
       'users' => UserModel::index()
     ];
