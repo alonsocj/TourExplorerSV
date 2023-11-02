@@ -8,3 +8,5 @@
   Route::get('/', [HomeController::class, 'index']);
 
   Route::get('/tours/{id_tour}', [HomeController::class, 'showTour']);
+
+  Route::get('/perfil/{id_usuario}', [HomeController::class, 'showProfile']);

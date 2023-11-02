@@ -17,6 +17,11 @@
       return view('landing.home', $data);
     }
 
+    public function showProfile($params) {
+      $paramsData = $params['params'];
+      
+    }
+
     public function showTour($params) {
       $paramsData = $params['params'];
       $tour = TourModel::obtenerUno(htmlentities(addslashes($paramsData['id_tour'])));
