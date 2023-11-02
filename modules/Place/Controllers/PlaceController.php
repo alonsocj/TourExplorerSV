@@ -9,6 +9,13 @@
 
   class PlaceController {
     public function index() {
+      if (!is_admin()) {
+        return view('app.errors.no-autho', [
+          'error' => "No autorizado",
+          'message' => "No tiene permisos para acceder a esta seccion"
+        ]);
+        exit();
+      }
       $data = [
         'title' => 'Tours Explorer SV | Lugares',
         'message' => 'Lugares',
@@ -18,6 +25,13 @@
     }
 
     public function show($params) {
+      if (!is_admin()) {
+        return view('app.errors.no-autho', [
+          'error' => "No autorizado",
+          'message' => "No tiene permisos para acceder a esta seccion"
+        ]);
+        exit();
+      }
       $paramsData = $params['params'];
       $lugar = PlaceModel::obtenerUno(htmlentities(addslashes($paramsData['id'])));
       if (!$lugar) {
@@ -34,6 +48,13 @@
     }
 
     public function store ($request, $params) {
+      if (!is_admin()) {
+        return view('app.errors.no-autho', [
+          'error' => "No autorizado",
+          'message' => "No tiene permisos para acceder a esta seccion"
+        ]);
+        exit();
+      }
       $request = $request['body'];
       if (isset($request['nombre']) && isset($request['descripcion']) && isset($request['direccion'])) {
         $data = [
@@ -63,6 +84,13 @@
     }
 
     public function update ($request, $params) {
+      if (!is_admin()) {
+        return view('app.errors.no-autho', [
+          'error' => "No autorizado",
+          'message' => "No tiene permisos para acceder a esta seccion"
+        ]);
+        exit();
+      }
       $bodyData = $request['body'];
       $paramsData = $params['params'];
 
@@ -92,6 +120,13 @@
     }
 
     public function destroy ($request, $params) {
+      if (!is_admin()) {
+        return view('app.errors.no-autho', [
+          'error' => "No autorizado",
+          'message' => "No tiene permisos para acceder a esta seccion"
+        ]);
+        exit();
+      }
       $paramsData = $params['params'];
 
       $lugar = PlaceModel::obtenerUno(htmlentities(addslashes($paramsData['id'])));

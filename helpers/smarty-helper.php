@@ -12,7 +12,7 @@
 
       // structure view[0] = module, view[1] = view|dir view[2] = view|dir ...
       // templateDir = ['module' => 'd  ir']
-
+      
       $template = $templateDirs[$view[0]] . "/" . $templateName;
       if (!$smarty->templateExists($template)) {
         $smarty->assign($data);
