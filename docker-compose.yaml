@@ -12,7 +12,7 @@ services:
       - 8081:8081
     environment:
       - COMPOSER_ALLOW_SUPERUSER=1
-    command: bash -c "composer install --ignore-platform-req=ext-gd && apache2-foreground && php -S app-php:8081"
+    command: bash -c "composer install --ignore-platform-req=ext-gd && apache2-foreground"
     networks:
       - app-network
     depends_on:
@@ -25,13 +25,23 @@ services:
     environment:
       MYSQL_DATABASE: toursexplorer
       MYSQL_ROOT_PASSWORD: root
-      # use caching sha2 password plugin
     command: --default-authentication-plugin=mysql_native_password
       
     networks:
       - app-network
     ports:
       - 3306:3306
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadminTourExplorer
+    environment:
+      PMA_HOST: mysqldb
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 8082:80
+    volumes:
+      - ./.docker/phpmyadmin:/sessions
 networks:
   app-network:
     driver: bridge
