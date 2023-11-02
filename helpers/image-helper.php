@@ -7,6 +7,9 @@
      * @return ['path' => 'path', 'name' => 'name', 'mime' => 'mime']
      */
     function upload_image($file, $dir = __DIR__ .'/../uploads/imagenes/') {
+      if (substr($dir, -1) != '/') {
+        $dir .= '/';
+      } 
       $path = $file['tmp_name'];
       $name = $file['name'];
       $mime = $file['type'];
@@ -31,9 +34,11 @@
      * Funcion que permite eliminar imagenes
      */
     function remove_image($path) {
-      if (file_exists($path)) {
-        unlink($path);
-        return true;
+      if($path)  {
+        if (file_exists($path)) {
+          unlink($path);
+          return true;
+        }
       }
       return false;
     }

@@ -6,4 +6,5 @@
   use Module\Landing\Controllers\HomeController;
 
   Route::get('/', [HomeController::class, 'index']);
-  Route::get('/phpinfo', [HomeController::class, 'phpinfo']);
+
+  Route::get('/tours/{id_tour}', [HomeController::class, 'showTour']);
