@@ -12,19 +12,41 @@
         </div>
       </div>
     {/if}
+    {if has_flash('success')}
+      <div class="col-12">
+        <div class="alert alert-success" role="alert">
+          {flash('success')}
+        </div>
+      </div>
+    {/if}
     </div>
     <div class="row mt-3">
       <div class="col-12 col-md-4">
-        <figure>
-          <img src="/uploads/tours/{$tour['imagen_tour']}" alt="{$tour['nombre_tour']}" style="width: 200px;"/>
-        </figure>
-        {if strtotime($tour['fecha_salida_tour']) < time() }
-          <p><span class="badge badge-danger bg-danger">Expirado</span></p>
-        {else}
-          <p><span class="badge badge-success bg-success">Vigente</span></p>
-        {/if}
-        <p>Precio: <span class="badge badge-primary bg-primary">{$tour['precio_tour']}</span></p>
-        <p>Disponibilidad: <span class="badge badge-primary bg-primary">{$tour['disponibilidad_tour']}</span></p>
+        <div class="border rounded p-3">
+          <figure class="d-flex justify-content-center">
+            <img src="/uploads/tours/{$tour['imagen_tour']}" alt="{$tour['nombre_tour']}" style="width: 175px;"/>
+          </figure>
+          {if strtotime($tour['fecha_salida_tour']) < time() }
+            <p><span class="badge badge-danger bg-danger">Expirado</span></p>
+          {else}
+            <p><span class="badge badge-success bg-success">Vigente</span></p>
+          {/if}
+          <p>Precio: <span class="badge badge-primary bg-primary">{$tour['precio_tour']}</span></p>
+          <p>Disponibilidad: <span class="badge badge-primary bg-primary">{$tour['disponibilidad_tour']}</span></p>
+          {if strtotime($tour['fecha_salida_tour']) > time() }
+            <div>
+              {if isset($reserva)}
+                <form action="/tours/{$tour['id_tour']}/reservar/cancelar" class="d-flex" method="post">
+                  <button type="submit" class="btn btn-danger btn-sm w-100 d-block">Cancelar reserva</button>
+                </form>
+              {else}
+                <form action="/tours/{$tour['id_tour']}/reservar" class="d-flex" method="post">
+                  <button type="submit" class="btn btn-primary btn-sm w-100 d-block">Reservar</button>
+                </form>
+              {/if}
+            </div>
+          {/if}
+        </div>
       </div>
       <div class="col-12 col-md-8">
         <div>
