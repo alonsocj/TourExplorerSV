@@ -8,9 +8,7 @@ composer.phar
 # composer.lock
 
 cache
-public/assets
 node_modules
 .env
 .vscode
-public/assets
 node_modules
