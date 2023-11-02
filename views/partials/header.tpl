@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-sm  shadow-sm p-3 mb-5 rounded">
   <div class="container">
     <a class="navbar-brand fw-bold " href="/">Tours Explorer SV 
-    <img src="uploads/config/logo.webp" alt="" width="20" height="20" class="d-inline-block align-text-top">
+      <img src="/uploads/config/logo.webp" alt="" width="20" height="20" class="d-inline-block align-text-top">
     </a>
 
     <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId"
@@ -12,18 +12,30 @@
       <ul class="navbar-nav me-auto mt-2 mt-lg-0">
         <li class="nav-item">
         {if is_auth()}
-          <li class="nav-item">
-            <a class="nav-link" href="/panel/tours">Tours</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/panel/lugares">Lugares</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/todos">Tareas</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/panel/usuarios">Usuarios</a>
-          </li>
+          {if is_admin()}
+            <li class="nav-item">
+              <a class="nav-link" href="/panel/tours">Tours</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/panel/lugares">Lugares</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/panel/usuarios">Usuarios</a>
+            </li>
+          {/if}
+          {if is_admin() || is_operador()}
+            <li class="nav-item">
+              <a class="nav-link" href="/panel/reservaciones">Reservaciones</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/panel/pagos">Pagos</a>
+            </li>
+          {/if}
+          {if is_turista()}
+            <li class="nav-item">
+              <a class="nav-link" href="/perfil">Perfil</a>
+            </li>
+          {/if}
         {/if}
       </ul>
       {if is_auth()}
