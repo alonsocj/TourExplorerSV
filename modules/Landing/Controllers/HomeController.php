@@ -17,6 +17,15 @@
       return view('landing.home', $data);
     }
 
+    public function showOldTours() {
+      $data = [
+        'title' => 'ToursExplorer SV',
+        'message' => 'Encuentra los mejores tours en El Salvador',
+        'tours' => TourModel::obtenerToursFechaMenorAAhora()
+      ];
+      return view('landing.home', $data);
+    }
+
     public function showTour($params) {
       $paramsData = $params['params'];
       $tour = TourModel::obtenerUno(htmlentities(addslashes($paramsData['id_tour'])));

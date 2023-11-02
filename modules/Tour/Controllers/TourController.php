@@ -12,13 +12,7 @@ class TourController
 {
   public function index()
   {
-    if (!is_admin()) {
-      return view('app.errors.no-autho', [
-        'error' => "No autorizado",
-        'message' => "No tiene permisos para acceder a esta seccion"
-      ]);
-      exit();
-    }
+
     $data = [
       'title' => 'Tours Explorer SV | Tours',
       'message' => 'Tours',
@@ -30,13 +24,6 @@ class TourController
   }
 
   public function borrarImagen($request, $params) {
-    if (!is_admin()) {
-      return view('app.errors.no-autho', [
-        'error' => "No autorizado",
-        'message' => "No tiene permisos para acceder a esta seccion"
-      ]);
-      exit();
-    }
     $params = $params['params'];
     $tour = TourModel::obtenerUno($params['id']);
     if (!$tour) {
@@ -58,13 +45,6 @@ class TourController
   }
 
   public function editar($params) {
-    if (!is_admin()) {
-      return view('app.errors.no-autho', [
-        'error' => "No autorizado",
-        'message' => "No tiene permisos para acceder a esta seccion"
-      ]);
-      exit();
-    }
     $paramsData = $params['params'];
 
     $tour = TourModel::obtenerUno($paramsData['id']);
@@ -88,13 +68,6 @@ class TourController
   }
 
   public function update($request, $params) {
-    if (!is_admin()) {
-      return view('app.errors.no-autho', [
-        'error' => "No autorizado",
-        'message' => "No tiene permisos para acceder a esta seccion"
-      ]);
-      exit();
-    }
     $bodyData = $request['body'];
     $files = $request['files'];
     $paramsData = $params['params'];
@@ -171,13 +144,6 @@ class TourController
 
   public function store($request, $params)
   {
-    if (!is_admin()) {
-      return view('app.errors.no-autho', [
-        'error' => "No autorizado",
-        'message' => "No tiene permisos para acceder a esta seccion"
-      ]);
-      exit();
-    }
     $bodyData = $request['body'];
     $files = $request['files'];
     $path = realpath(__DIR__ . '/../../../uploads/tours/');
@@ -227,13 +193,6 @@ class TourController
 
   public function create($params)
   {
-    if (!is_admin()) {
-      return view('app.errors.no-autho', [
-        'error' => "No autorizado",
-        'message' => "No tiene permisos para acceder a esta seccion"
-      ]);
-      exit();
-    }
     $data = [
       'title' => 'Tours Explorer SV | Crear Tour',
       'message' => 'Crear Tour',
@@ -244,14 +203,6 @@ class TourController
 
   public function destroy($request, $params)
   {
-    if (!is_admin()) {
-      return view('app.errors.no-autho', [
-        'error' => "No autorizado",
-        'message' => "No tiene permisos para acceder a esta seccion"
-      ]);
-      exit();
-    }
-
     $paramsData = $params['params'];
 
     $tour = TourModel::obtenerUno($paramsData['id']);

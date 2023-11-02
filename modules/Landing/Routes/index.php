@@ -8,3 +8,4 @@
   Route::get('/', [HomeController::class, 'index']);
 
   Route::get('/tours/{id_tour}', [HomeController::class, 'showTour']);
+  Route::get('/tours-antiguos', [HomeController::class, 'showOldTours']);

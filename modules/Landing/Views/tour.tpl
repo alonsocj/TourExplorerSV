@@ -18,6 +18,11 @@
         <figure>
           <img src="/uploads/tours/{$tour['imagen_tour']}" alt="{$tour['nombre_tour']}" style="width: 200px;"/>
         </figure>
+        {if strtotime($tour['fecha_salida_tour']) < time() }
+          <p><span class="badge badge-danger bg-danger">Expirado</span></p>
+        {else}
+          <p><span class="badge badge-success bg-success">Vigente</span></p>
+        {/if}
         <p>Precio: <span class="badge badge-primary bg-primary">{$tour['precio_tour']}</span></p>
         <p>Disponibilidad: <span class="badge badge-primary bg-primary">{$tour['disponibilidad_tour']}</span></p>
       </div>

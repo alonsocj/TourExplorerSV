@@ -17,7 +17,7 @@
       </div>
     {/if}
     </div>
-    <div class="row mt-3">
+    <div class="row g-3 mt-3">
       {if is_array($tours) && count($tours) > 0}
         {foreach from=$tours item=tour}
           <div class="col-12 col-sm-6 col-md-4 col-lg-3">
